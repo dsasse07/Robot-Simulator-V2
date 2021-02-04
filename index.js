@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
           break; 
     }
   })
-
+ 
 
   control.addEventListener('click', e => {
     switch (true) {
