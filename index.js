@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   control.addEventListener('click', e => {
     switch (true) {
-      case (e.target.id === "move-button"):
+      case (e.target.id === "move-button" && totalSteps > 0):
         activateRobot()
         break
       case (e.target.className === "step"):
