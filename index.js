@@ -6,14 +6,18 @@ document.addEventListener("DOMContentLoaded", function() {
   // Build Li
   // Fill textCOntent
   // Append to ul
+
+
+  /// ADD MOVES ///
   const control = document.querySelector("#control-panel")
-
-
   const ul = document.querySelector('#moves-container')
   let steps = []
-  function buildLi (direction) {
+  let totalSteps
+
+  const buildLi = direction => {
     let li = document.createElement("li")
     steps.push(li)
+    updateTotalSteps()
     li.dataset.step = steps.indexOf(li) + 1
     li.textContent = direction
     li.className = "step"
@@ -21,36 +25,35 @@ document.addEventListener("DOMContentLoaded", function() {
     ul.append(li)
   }
 
-  const activateRobot = _ => {
- let totalSteps = steps.length
- let count = 0
-  setInterval(moveRobot(totalSteps), 500)
- 
-function moveRobot(totalSteps){
-  console.log(totalSteps)
-  console.log(count)
-  if (count == totalSteps) clearInterval()
-  else {
-  let currentLi = steps.shift()
-  move(currentLi.textContent)
-  currentLi.remove()
-    count++;
-}
-
-}
+  const updateTotalSteps = _ => {
+    totalSteps = steps.length
   }
-// function moveRobot(totalSteps, t){
-//   console.log(totalSteps)
-//   console.log(t)
-//   if (t == totalSteps) clearInterval(t)
-//   else {
-//   let currentLi = steps.shift()
-//   move(currentLi.textContent)
-//   currentLi.remove()}
 
-  
-//}
+  ///  DELETE STEP ////
+  const deleteStep = _ => {
+    let index = steps.indexOf(e.target)
+    steps.splice(index, 1)
+    updateTotalSteps()
+    e.target.remove()
+  }
 
+  //////   MOVING!!!!!   ////////
+  const activateRobot = _ => {
+    let count = 0
+    
+    const moveRobot = _ => {
+      count += 1
+      if (count >= totalSteps) clearInterval(interval)
+      let currentLi = steps.shift()
+      move(currentLi.textContent)
+      currentLi.remove()
+    }
+    
+    let interval = setInterval(moveRobot, 500)
+  }
+
+
+  /// EVENT LISTENERS ////
 
   window.addEventListener('keydown', e => {
     
@@ -68,21 +71,17 @@ function moveRobot(totalSteps){
           buildLi('down')
           break; 
     }
-
-
-
   })
 
 
   control.addEventListener('click', e => {
-    if (e.target.id === "move-button"){
-      activateRobot()
-    } else if (e.target.className === "step") {
-      let index = steps.indexOf(e.target)
-      steps.splice(index, 1)
-      e.target.remove()
+    switch (true) {
+      case (e.target.id === "move-button"):
+        activateRobot()
+        break
+      case (e.target.className === "step"):
+        deleteStep();
     }
-
   })
 
 
